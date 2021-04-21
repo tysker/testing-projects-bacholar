@@ -1,0 +1,6 @@
+projectKey=dk.oertel
+serverUrl=http://localhost:9000
+serverVersion=8.6.0.39681
+dashboardUrl=http://localhost:9000/dashboard?id=dk.oertel
+ceTaskId=AXa0U8ETaUJaawxqB_4x
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXa0U8ETaUJaawxqB_4x

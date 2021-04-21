@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseAccount.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">banking-test</a> &gt; <a href="index.source.html" class="el_package">dk.oertel.banking</a> &gt; <span class="el_source">BaseAccount.java</span></div><h1>BaseAccount.java</h1><pre class="source lang-java linenums">package dk.oertel.banking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BaseAccount {
+	private SmsService smsService;
+	private final Bank bank;
+	private final Customer customer;
+	private final String number;
+<span class="fc" id="L11">	private final List&lt;Transaction&gt; transactions = new ArrayList&lt;Transaction&gt;();</span>
+
+<span class="fc" id="L13">	public BaseAccount(SmsService smsService, Bank bank, Customer customer, String number) {</span>
+<span class="fc" id="L14">		this.smsService = smsService;</span>
+<span class="fc" id="L15">		this.bank = bank;</span>
+<span class="fc" id="L16">		this.customer = customer;</span>
+<span class="fc" id="L17">		this.number = number;</span>
+<span class="fc" id="L18">	}</span>
+
+	public Customer getCustomer() {
+<span class="fc" id="L21">		return customer;</span>
+	}
+
+	public Bank getBank() {
+<span class="fc" id="L25">		return bank;</span>
+	}
+
+	public String getNumber() {
+<span class="fc" id="L29">		return number;</span>
+	}
+
+	public long getBalance() {
+<span class="fc" id="L33">		long balance = 0L;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">		for (Transaction transaction : transactions) {</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">			if (transaction.getSource() == this)</span>
+<span class="fc" id="L36">				balance -= transaction.getAmount();</span>
+			else
+<span class="fc" id="L38">				balance += transaction.getAmount();</span>
+<span class="fc" id="L39">		}</span>
+<span class="fc" id="L40">		return balance;</span>
+	}
+
+	public void transfer(long amount, BaseAccount destination) {
+<span class="fc" id="L44">		Transaction transaction = new Transaction(this, amount, destination);</span>
+<span class="fc" id="L45">		transactions.add(transaction);</span>
+<span class="fc" id="L46">		destination.transactions.add(transaction);</span>
+<span class="fc" id="L47">	}</span>
+
+	public void transfer(long amount, String destinationNumber) {
+<span class="fc" id="L50">		var destinationAccount = bank.getAccount(destinationNumber);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		if (destinationAccount == null) {</span>
+<span class="fc" id="L52">			throw new NonExistingAccount();</span>
+		}
+
+<span class="fc" id="L55">		transfer(amount, destinationAccount);</span>
+<span class="fc" id="L56">	}</span>
+
+	public List&lt;Transaction&gt; getTransactions() {
+<span class="fc" id="L59">		return transactions;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
